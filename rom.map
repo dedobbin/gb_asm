@@ -1,0 +1,81 @@
+ROM0 bank #0:
+  SECTION: $0000-$004f ($0050 bytes) ["Game code"]
+           $0000 = Start
+           $002a = Start.game_loop
+           $003a = Start.game_play
+           $0046 = Start.game_over
+           $0049 = Start.update_oam
+  SECTION: $0050-$0065 ($0016 bytes) ["OAM DMA routine"]
+           $0050 = CopyDMARoutine
+           $0057 = CopyDMARoutine.copy
+           $005e = DMARoutine
+           $0062 = DMARoutine.wait
+           $0066 = DMARoutineEnd
+  SECTION: $0100-$014f ($0050 bytes) ["HEADER"]
+           $0100 = EntryPoint
+    SLACK: $3f4a bytes
+
+ROMX bank #1:
+  SECTION: $4000-$4131 ($0132 bytes) ["game"]
+           $4000 = BackgroundTileData
+           $4020 = ObjTileData
+           $4020 = BackgroundTileDataEnd
+           $4040 = ObjTileDataEnd
+           $4040 = LoadTiles
+           $404c = LoadTiles.copy_background_tiles_loop
+           $405d = LoadTiles.copy_obj_tiles_loop
+           $4066 = SetBackground
+           $406f = SetBackground.set_background_loop
+           $4079 = InitObjs
+           $40b6 = ClearTiles
+           $40c3 = ClearTiles.clear_tiles_loop
+           $40cd = PlayerUpdate
+           $40e6 = PlayerUpdate.update_right_end
+           $40f7 = PlayerUpdate.player_update_end
+           $40f7 = PlayerUpdate.update_left_end
+           $410c = PlayerUpdate.game_over_end
+           $410d = SetGameOver
+           $411c = SetGameOver.paddle_loop
+  SECTION: $4132-$41d7 ($00a6 bytes) ["ball"]
+           $4132 = BallInit
+           $413d = BallUpdate
+           $4163 = BallUpdate.add_y_speed
+           $418d = BallUpdate.add_x_speed
+           $4192 = Collision
+           $41b4 = Collision.paddle_col_end
+           $41cf = Collision.touch_bottom
+           $41d5 = Collision.col_yes
+           $41d7 = Collision.col_end
+  SECTION: $41d8-$41f7 ($0020 bytes) ["joypad"]
+           $41d8 = ReadInput
+  SECTION: $41f8-$4202 ($000b bytes) ["HELPERS"]
+           $41f8 = WaitVBlank
+           $4200 = InvertTwoCpl
+    SLACK: $3dfd bytes
+
+WRAM0 bank #0:
+  SECTION: $c000-$c001 ($0002 bytes) ["ball_vars"]
+           $c000 = ball_speed_x
+           $c001 = ball_speed_y
+  SECTION: $c100-$c19f ($00a0 bytes) ["oam_vars"]
+           $c100 = player_obj
+           $c108 = ball_obj
+           $c10c = rest_obj
+    SLACK: $0f5e bytes
+
+WRAMX bank #1:
+  SECTION: $d000-$d000 ($0001 byte) ["game_Vars"]
+           $d000 = game_mode
+    SLACK: $0fff bytes
+
+HRAM bank #0:
+  SECTION: $ff80-$ff87 ($0008 bytes) ["OAM DMA"]
+           $ff80 = hOAMDMA
+    SLACK: $0077 bytes
+
+USED:
+    ROM0: $00b6 bytes in 1 bank
+    ROMX: $0203 bytes in 1 bank
+    WRAM0: $00a2 bytes in 1 bank
+    WRAMX: $0001 byte in 1 bank
+    HRAM: $0008 bytes in 1 bank
